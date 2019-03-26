@@ -1,8 +1,14 @@
 
-var hero = {
-    left: 575,
-    top: 700
-};
+var hero = [
+    { left: 200, top: 700 },
+    { left: 300, top: 700 },
+    { left: 400, top: 700 },
+    { left: 500, top: 700 },
+    { left: 600, top: 700 },
+    { left: 700, top: 700 },
+    { left: 800, top: 700 },
+    { left: 900, top: 700 },
+];
 
 var missiles = [];
 
@@ -31,40 +37,55 @@ var enemies = [
 
 
 $(document).keydown(function(e) {
+  if(hero.length!=0){
     if (e.keyCode === 37) {
         // Left
-        hero.left = hero.left - 10;
-    }
+        for(var i = 0 ; i < hero.length ; i++ )
+        {
+          if(hero[i].left>10){
+              hero[i].left = hero[i].left - 10;
+            }
+        }
+      }
     if (e.keyCode === 39) {
-        // Right
-        hero.left = hero.left + 10;
+        // Left
+        for(var i = 0 ; i < hero.length ; i++ ){
+          if(hero[i].left<1150)
+          {
+            hero[i].left = hero[i].left + 10;
+          }
+        }
     }
     if (e.keyCode === 32) {
         // Spacebar (fire)
-        missiles.push({
-            left: hero.left + 20,
-            top: hero.top - 20
-        });
+        for(var i = 0 ; i < hero.length ; i++ ){
+          missiles.push({
+              left: hero[i].left + 20,
+              top: hero[i].top - 20
+          });
+        }
         drawMissiles()
-    }
+        }
     drawHero();
+    }
 });
 
 
 function drawHero() {
-    document.getElementById('hero').style.left = hero.left + 'px';
-    document.getElementById('hero').style.top = hero.top + 'px';
+
+    $('#hero')[0].innerHTML = "";
+    for(var i = 0 ; i < hero.length ; i++ ) {
+        document.getElementById('hero').innerHTML += `<div class='ally' style='left:${hero[i].left}px; top:${hero[i].top}px'></div>`;
+    }
+
 }
 
 function drawMissiles() {
-  if(missiles.length!=0)
-  {
-    document.getElementById('missiles').innerHTML = ""
+    $('#missiles')[0].innerHTML = ""
     for(var i = 0 ; i < missiles.length ; i++ ) {
         document.getElementById('missiles').innerHTML += `<div class='missile1' style='left:${missiles[i].left}px; top:${missiles[i].top}px'></div>`;
     }
   }
-}
 
 function moveMissiles() {
   if(missiles.length!=0)
@@ -76,9 +97,9 @@ function moveMissiles() {
 }
 
 function drawEnemies() {
-    document.getElementById('enemies').innerHTML = ""
+    $('#enemies')[0].innerHTML = "";
     for(var i = 0 ; i < enemies.length ; i++ ) {
-        document.getElementById('enemies').innerHTML += `<div class='enemy' style='left:${enemies[i].left}px; top:${enemies[i].top}px'></div>`;
+        $('#enemies')[0].innerHTML += `<div class='enemy' style='left:${enemies[i].left}px; top:${enemies[i].top}px'></div>`;
     }
 }
 
@@ -109,8 +130,8 @@ function moveEnemies() {
 }
 
 function collisionDetection() {
-    for (var enemy = 0; enemy < enemies.length; enemy++) {
-        for (var missile = 0; missile < missiles.length; missile++) {
+    for (var missile = 0; missile < missiles.length; missile++) {
+        for (var enemy = 0; enemy < enemies.length; enemy++){
             if (
                 missiles[missile].left >= enemies[enemy].left  &&
                 missiles[missile].left <= (enemies[enemy].left + 50)  &&
@@ -120,43 +141,95 @@ function collisionDetection() {
                 enemies.splice(enemy, 1);
                 missiles.splice(missile, 1);
             }
+
+        }
+        if (missiles[missile].top <= 0) {
+          missiles.splice(missile, 1);
         }
     }
 }
 
-function enemyRandomShot()
-{
-  for(var i = 0 ; i < enemies.length ; i++ )
-  {
-    var number = 1 + Math.floor(Math.random() * 10);
-    if(number<3)
-    {
-      missiles.push({
+function collisionDetectionEnemie() {
+    for (var missile = 0; missile < missilesEnemies.length; missile++) {
+        for (var ally = 0; ally < hero.length; ally++){
+            if (
+                missilesEnemies[missile].left >= hero[ally].left  &&
+                missilesEnemies[missile].left <= (hero[ally].left + 50)  &&
+                missilesEnemies[missile].top <= (hero[ally].top + 50)  &&
+                missilesEnemies[missile].top >= hero[ally].top
+            ) {
+                hero.splice(ally, 1);
+                missilesEnemies.splice(missile, 1);
+            }
+        }
+        if (missilesEnemies[missile].top >= 700) {
+          missilesEnemies.splice(missile, 1);
+        }
+    }
+}
+
+function enemyRandomShot(){
+  for(var i = 0 ; i < enemies.length ; i++ ){
+    var number = 1 + Math.floor(Math.random() * 100);
+    if(number<2){
+      missilesEnemies.push({
           left: enemies[i].left + 20,
           top: enemies[i].top + 20
       });
-      drawMissilesEnemies()
     }
   }
 }
 
 function drawMissilesEnemies() {
-  if(missiles.length!=0)
+  if(missilesEnemies.length!=0)
   {
-    document.getElementById('missilesEnemies').innerHTML = ""
-    for(var i = 0 ; i < missiles.length ; i++ ) {
-        document.getElementById('missilesEnemies').innerHTML += `<div class='missile2' style='left:${missilesEnemies[i].left}px; top:${missilesEnemies[i].top}px'></div>`;
+    $('#missilesEnemies')[0].innerHTML = ""
+    for(var i = 0 ; i < missilesEnemies.length ; i++ ) {
+        $('#missilesEnemies')[0].innerHTML += `<div class='missile2' style='left:${missilesEnemies[i].left}px; top:${missilesEnemies[i].top}px'></div>`;
     }
   }
 }
 
-function gameLoop() {
-    setTimeout(gameLoop, 100)
-    moveMissiles();
-    drawMissiles();
-    moveEnemies();
-    drawEnemies();
-    collisionDetection();
+function moveMissilesEnemies() {
+  if(missilesEnemies.length!=0)
+  {
+    for(var i = 0 ; i < missilesEnemies.length ; i++ ) {
+        missilesEnemies[i].top = missilesEnemies[i].top + 8
+    }
+  }
 }
 
-gameLoop()
+function anadir(){
+  hero.push({
+      left: 500,
+      top: 700
+  });
+}
+
+function gameLoop() {
+    drawHero();
+    setTimeout(gameLoop, 100)
+    moveMissiles();
+    moveMissilesEnemies();
+    drawMissiles();
+    drawMissilesEnemies();
+    moveEnemies();
+    enemyRandomShot();
+    drawEnemies();
+    collisionDetection();
+    collisionDetectionEnemie();
+    victory();
+}
+
+function victory() {
+  if(enemies.length==0){
+    $("[name=resultado]")[0].textContent="victory";
+    $("[name=resultado]")[0].removeAttribute("hidden");
+  }
+}
+
+
+$( document ).ready(function() {
+    console.log( "ready!" );
+    gameLoop();
+});
