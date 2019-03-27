@@ -36,7 +36,7 @@ $(document).keydown(function (e) {
         for (var i = 0; i < hero.length; i++) {
             if (hero[i].left > 10) {
                 hero[i].left = hero[i].left - 10;
-                writeOnMessage("heroe", hero[i].iden.toString(), "mover izquierda");
+                writeOnMessage('heroe', hero[i].iden.toString(), 'mover izquierda');
             }
         }
         break;
@@ -44,7 +44,7 @@ $(document).keydown(function (e) {
         for (var i = 0; i < hero.length; i++) {
             if (hero[i].left < 1150) {
                 hero[i].left = hero[i].left + 10;
-                writeOnMessage("heroe", hero[i].iden.toString(), "mover derecha");
+                writeOnMessage('heroe', hero[i].iden.toString(), 'mover derecha');
             }
         }
         break;
@@ -54,7 +54,7 @@ $(document).keydown(function (e) {
                 left: hero[i].left + 20,
                 top: hero[i].top - 20
             });
-            writeOnMessage("heroe", hero[i].iden.toString(), "disparo");
+            writeOnMessage('heroe', hero[i].iden.toString(), 'disparo');
         }
         drawMissiles();
         break;
@@ -65,7 +65,7 @@ $(document).keydown(function (e) {
 
 function drawHero() {
 
-    $('#hero')[0].innerHTML = "";
+    $('#hero')[0].innerHTML = '';
     for (var i = 0; i < hero.length; i++) {
         document.getElementById('hero').innerHTML += `<div class='ally' style='left:${hero[i].left}px; top:${hero[i].top}px'></div>`;
     }
@@ -73,7 +73,7 @@ function drawHero() {
 }
 
 function drawMissiles() {
-    $('#missiles')[0].innerHTML = ""
+    $('#missiles')[0].innerHTML = ''
     for (var i = 0; i < missiles.length; i++) {
         document.getElementById('missiles').innerHTML += `<div class='missile1' style='left:${missiles[i].left}px; top:${missiles[i].top}px'></div>`;
     }
@@ -88,7 +88,7 @@ function moveMissiles() {
 }
 
 function drawEnemies() {
-    $('#enemies')[0].innerHTML = "";
+    $('#enemies')[0].innerHTML = '';
     for (var i = 0; i < enemies.length; i++) {
         $('#enemies')[0].innerHTML += `<div class='enemy' style='left:${enemies[i].left}px; top:${enemies[i].top}px'></div>`;
     }
@@ -107,11 +107,11 @@ function moveEnemies() {
     for (var i = 0; i < enemies.length; i++) {
         if (opio == 1) {
             enemies[i].left = enemies[i].left + 10;
-            // writeOnMessage("enemigos",i.toString(),"mover derecha");
+            // writeOnMessage('enemigos',i.toString(),'mover derecha');
         }
         if (opio == 0) {
             enemies[i].left = enemies[i].left - 10;
-            // writeOnMessage("enemigos",i.toString(),"mover izquierda");
+            // writeOnMessage('enemigos',i.toString(),'mover izquierda');
         }
     }
 }
@@ -163,7 +163,7 @@ function enemyRandomShot() {
                 left: enemies[i].left + 20,
                 top: enemies[i].top + 20
             });
-            writeOnMessage("enemigos", i, "disparo");
+            writeOnMessage('enemigos', i, 'disparo');
         }
     }
 }
@@ -171,7 +171,7 @@ function enemyRandomShot() {
 function drawMissilesEnemies() {
     if (missilesEnemies.length == 0)
         return;
-    $('#missilesEnemies')[0].innerHTML = ""
+    $('#missilesEnemies')[0].innerHTML = ''
     for (var i = 0; i < missilesEnemies.length; i++) {
         $('#missilesEnemies')[0].innerHTML += `<div class='missile2' style='left:${missilesEnemies[i].left}px; top:${missilesEnemies[i].top}px'></div>`;
     }
@@ -210,18 +210,18 @@ function gameLoop() {
 
 function victory() {
     if (enemies.length == 0) {
-        $("[name=resultado]")[0].textContent = "victory";
-        $("[name=resultado]")[0].removeAttribute("hidden");
+        $('[name=resultado]')[0].textContent = 'victory';
+        $('[name=resultado]')[0].removeAttribute('hidden');
     }
 }
 
 function writeOnMessage(entidad, numero, accion) {
-    $('#eventos')[0].innerHTML += entidad + " " + numero + " " + accion + "\n";
+    $('#eventos')[0].innerHTML += entidad + ' ' + numero + ' ' + accion + '\n';
     $('#eventos').scrollTop($('#eventos')[0].scrollHeight);
 }
 
 
 $(document).ready(function () {
-    console.log("ready!");
+    console.log('ready!');
     gameLoop();
 });
