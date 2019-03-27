@@ -1,7 +1,7 @@
 div#background {
     width: 1200px;
     height: 800px;
-    background-image: url('assets/background.png');
+    background-image: url('https://danielrinconr.github.io/LAB4_ProgWeb/Game/assets/background.png');
     /* position: absolute; */
 }
 
@@ -26,14 +26,14 @@ div#missilesEnemies {
 div.missile1 {
     width: 10px;
     height: 28px;
-    background-image: url('assets/missile1.png');
+    background-image: url('https://danielrinconr.github.io/LAB4_ProgWeb/Game/assets/missile1.png');
     position: absolute;
 }
 
 div.missile2 {
     width: 10px;
     height: 28px;
-    background-image: url('assets/missile1.png');
+    background-image: url('https://danielrinconr.github.io/LAB4_ProgWeb/Game/assets/missile1.png');
     position: absolute;
 }
 
@@ -46,14 +46,14 @@ div#enemies {
 div.enemy {
     width: 50px;
     height: 50px;
-    background-image: url('assets/enemy.png');
+    background-image: url('https://danielrinconr.github.io/LAB4_ProgWeb/Game/assets/enemy.png');
     position: absolute;
 }
 
 div.ally {
     width: 50px;
     height: 50px;
-    background-image: url('assets/hero.png');
+    background-image: url('https://danielrinconr.github.io/LAB4_ProgWeb/Game/assets/hero.png');
     position: absolute;
     left: 575px;
     top: 700px;
