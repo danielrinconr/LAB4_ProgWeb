@@ -26,15 +26,15 @@
         <div class='main-login-contain'>
             <div class='login-form'>
                 <!-- TODO: Fix method in form -->
-                <form id='form-validation' action='https://danielrinconr.github.io/LAB4_ProgWeb/Admin/index.html'>
+                <form id='form-validation' action='/LogIn'>
                     <h4>Iniciar sesión</h4>
                     <p class='login-title-text'>Lorem ipsum dolor sit amet, consectetuer elit.</p>
                     <div class='form-group'>
-                        <input required='required' type='email' id='input-email'>
-                        <label class='control-label' for='input-email'>Ingrese su correo</label><i class='bar'></i>
+                        <input type='text' name = 'username' id='input-email' required>
+                        <label class='control-label' for='input-email'>Ingrese su nombre de usuario</label><i class='bar'></i>
                     </div>
                     <div class='form-group'>
-                        <input required='required' type='password' id='input-password'>
+                        <input type='password' name = 'password' id='input-password' required>
                         <label class='control-label' for='input-password'>Contraseña</label><i class='bar'></i>
                     </div>
                     <!-- TODO: Make the forgot-password-login -->
