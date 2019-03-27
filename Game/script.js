@@ -73,7 +73,7 @@ function drawHero() {
 }
 
 function drawMissiles() {
-    $('#missiles')[0].innerHTML = ''
+    $('#missiles')[0].innerHTML = '';
     for (var i = 0; i < missiles.length; i++) {
         document.getElementById('missiles').innerHTML += `<div class='missile1' style='left:${missiles[i].left}px; top:${missiles[i].top}px'></div>`;
     }
@@ -107,11 +107,11 @@ function moveEnemies() {
     for (var i = 0; i < enemies.length; i++) {
         if (opio == 1) {
             enemies[i].left = enemies[i].left + 10;
-            // writeOnMessage('enemigos',i.toString(),'mover derecha');
+            /*writeOnMessage('enemigos',i.toString(),'mover derecha');*/
         }
         if (opio == 0) {
             enemies[i].left = enemies[i].left - 10;
-            // writeOnMessage('enemigos',i.toString(),'mover izquierda');
+            /* writeOnMessage('enemigos',i.toString(),'mover izquierda');*/
         }
     }
 }
@@ -171,7 +171,7 @@ function enemyRandomShot() {
 function drawMissilesEnemies() {
     if (missilesEnemies.length == 0)
         return;
-    $('#missilesEnemies')[0].innerHTML = ''
+    $('#missilesEnemies')[0].innerHTML = '';
     for (var i = 0; i < missilesEnemies.length; i++) {
         $('#missilesEnemies')[0].innerHTML += `<div class='missile2' style='left:${missilesEnemies[i].left}px; top:${missilesEnemies[i].top}px'></div>`;
     }
@@ -195,7 +195,7 @@ function anadir() {
 
 function gameLoop() {
     drawHero();
-    setTimeout(gameLoop, 100)
+    setTimeout(gameLoop, 100);
     moveMissiles();
     moveMissilesEnemies();
     drawMissiles();
