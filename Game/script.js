@@ -216,7 +216,7 @@ function victory() {
 }
 
 function writeOnMessage(entidad, numero, accion) {
-    $('#eventos')[0].innerHTML += entidad + ' ' + numero + ' ' + accion + '\n';
+    $('#eventos')[0].innerHTML += `${entidad} ${numero} ${accion}\n`;
     $('#eventos').scrollTop($('#eventos')[0].scrollHeight);
 }
 
