@@ -2,7 +2,7 @@ div#background {
     width: 1200px;
     height: 800px;
     background-image: url('assets/background.png');
-    position: absolute;
+    /* position: absolute; */
 }
 
 div#hero {
@@ -57,4 +57,9 @@ div.ally {
     position: absolute;
     left: 575px;
     top: 700px;
+}
+
+textarea{
+    width: 245px;
+    height: 277px;
 }
