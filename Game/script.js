@@ -1,5 +1,14 @@
 
-var hero = [];
+var hero = [
+    { left: 200, top: 700 },
+    { left: 300, top: 700 },
+    { left: 400, top: 700 },
+    { left: 500, top: 700 },
+    { left: 600, top: 700 },
+    { left: 700, top: 700 },
+    { left: 800, top: 700 },
+    { left: 900, top: 700 },
+];
 
 var missiles = [];
 
@@ -36,16 +45,25 @@ $(document).keydown(function(e) {
         {
           if(hero[i].left>10){
               hero[i].left = hero[i].left - 10;
+<<<<<<< HEAD
               writeOnMessage("heroe",hero[i].iden.toString(),"mover izquierda");
+=======
+>>>>>>> 658fe8c739aba7de921f35a2467f76563155b2a0
             }
         }
       }
     if (e.keyCode === 39) {
         // Left
         for(var i = 0 ; i < hero.length ; i++ ){
+<<<<<<< HEAD
           if(hero[i].left<1150){
             hero[i].left = hero[i].left + 10;
             writeOnMessage("heroe",hero[i].iden.toString(),"mover derecha");
+=======
+          if(hero[i].left<1150)
+          {
+            hero[i].left = hero[i].left + 10;
+>>>>>>> 658fe8c739aba7de921f35a2467f76563155b2a0
           }
         }
     }
@@ -56,7 +74,10 @@ $(document).keydown(function(e) {
               left: hero[i].left + 20,
               top: hero[i].top - 20
           });
+<<<<<<< HEAD
         writeOnMessage("heroe",hero[i].iden.toString(),"disparo");
+=======
+>>>>>>> 658fe8c739aba7de921f35a2467f76563155b2a0
         }
         drawMissiles()
         }
@@ -139,7 +160,11 @@ function collisionDetection() {
             }
 
         }
+<<<<<<< HEAD
         if (missiles[missile].top <= 10) {
+=======
+        if (missiles[missile].top <= 0) {
+>>>>>>> 658fe8c739aba7de921f35a2467f76563155b2a0
           missiles.splice(missile, 1);
         }
     }
@@ -172,7 +197,10 @@ function enemyRandomShot(){
           left: enemies[i].left + 20,
           top: enemies[i].top + 20
       });
+<<<<<<< HEAD
       writeOnMessage("enemigos",i,"disparo");
+=======
+>>>>>>> 658fe8c739aba7de921f35a2467f76563155b2a0
     }
   }
 }
@@ -199,8 +227,12 @@ function moveMissilesEnemies() {
 function anadir(){
   hero.push({
       left: 500,
+<<<<<<< HEAD
       top: 700,
       iden: identifier
+=======
+      top: 700
+>>>>>>> 658fe8c739aba7de921f35a2467f76563155b2a0
   });
 }
 
@@ -217,6 +249,7 @@ function gameLoop() {
     collisionDetection();
     collisionDetectionEnemie();
     victory();
+<<<<<<< HEAD
 }
 
 function victory() {
@@ -230,6 +263,15 @@ function writeOnMessage(entidad,numero,accion)
 {
   $('#eventos')[0].innerHTML += entidad+" "+numero+" "+accion+"\n";
   $('#eventos').scrollTop($('#eventos')[0].scrollHeight);
+=======
+}
+
+function victory() {
+  if(enemies.length==0){
+    $("[name=resultado]")[0].textContent="victory";
+    $("[name=resultado]")[0].removeAttribute("hidden");
+  }
+>>>>>>> 658fe8c739aba7de921f35a2467f76563155b2a0
 }
 
 
