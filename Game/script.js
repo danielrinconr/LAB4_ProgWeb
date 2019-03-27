@@ -114,12 +114,12 @@ function moveEnemies() {
       if(opio == 1)
         {
           enemies[i].left = enemies[i].left + 10;
-          writeOnMessage("enemigos",i.toString(),"mover derecha");
+          // writeOnMessage("enemigos",i.toString(),"mover derecha");
         }
       if(opio == 0)
         {
           enemies[i].left = enemies[i].left - 10;
-          writeOnMessage("enemigos",i.toString(),"mover izquierda");
+          // writeOnMessage("enemigos",i.toString(),"mover izquierda");
         }
     }
   }
