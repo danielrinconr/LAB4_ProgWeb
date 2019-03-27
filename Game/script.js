@@ -1,14 +1,5 @@
 
-var hero = [
-    { left: 200, top: 700 },
-    { left: 300, top: 700 },
-    { left: 400, top: 700 },
-    { left: 500, top: 700 },
-    { left: 600, top: 700 },
-    { left: 700, top: 700 },
-    { left: 800, top: 700 },
-    { left: 900, top: 700 },
-];
+var hero = [];
 
 var missiles = [];
 
@@ -45,15 +36,16 @@ $(document).keydown(function(e) {
         {
           if(hero[i].left>10){
               hero[i].left = hero[i].left - 10;
+              writeOnMessage("heroe",hero[i].iden.toString(),"mover izquierda");
             }
         }
       }
     if (e.keyCode === 39) {
         // Left
         for(var i = 0 ; i < hero.length ; i++ ){
-          if(hero[i].left<1150)
-          {
+          if(hero[i].left<1150){
             hero[i].left = hero[i].left + 10;
+            writeOnMessage("heroe",hero[i].iden.toString(),"mover derecha");
           }
         }
     }
@@ -64,6 +56,7 @@ $(document).keydown(function(e) {
               left: hero[i].left + 20,
               top: hero[i].top - 20
           });
+        writeOnMessage("heroe",hero[i].iden.toString(),"disparo");
         }
         drawMissiles()
         }
@@ -146,7 +139,7 @@ function collisionDetection() {
             }
 
         }
-        if (missiles[missile].top <= 0) {
+        if (missiles[missile].top <= 10) {
           missiles.splice(missile, 1);
         }
     }
@@ -179,6 +172,7 @@ function enemyRandomShot(){
           left: enemies[i].left + 20,
           top: enemies[i].top + 20
       });
+      writeOnMessage("enemigos",i,"disparo");
     }
   }
 }
@@ -205,7 +199,8 @@ function moveMissilesEnemies() {
 function anadir(){
   hero.push({
       left: 500,
-      top: 700
+      top: 700,
+      iden: identifier
   });
 }
 
@@ -229,6 +224,12 @@ function victory() {
     $("[name=resultado]")[0].textContent="victory";
     $("[name=resultado]")[0].removeAttribute("hidden");
   }
+}
+
+function writeOnMessage(entidad,numero,accion)
+{
+  $('#eventos')[0].innerHTML += entidad+" "+numero+" "+accion+"\n";
+  $('#eventos').scrollTop($('#eventos')[0].scrollHeight);
 }
 
 
