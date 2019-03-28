@@ -10,55 +10,102 @@ var opio = 1;
 
 var limitebalasenemigas = 50;
 
-var enemies = [
-    { left: 200, top: 100 },
-    { left: 300, top: 100 },
-    { left: 400, top: 100 },
-    { left: 500, top: 100 },
-    { left: 600, top: 100 },
-    { left: 700, top: 100 },
-    { left: 800, top: 100 },
-    { left: 900, top: 100 },
-    { left: 200, top: 175 },
-    { left: 300, top: 175 },
-    { left: 400, top: 175 },
-    { left: 500, top: 175 },
-    { left: 600, top: 175 },
-    { left: 700, top: 175 },
-    { left: 800, top: 175 },
-    { left: 900, top: 175 }
+var enemies = [{
+        left: 200,
+        top: 100
+    },
+    {
+        left: 300,
+        top: 100
+    },
+    {
+        left: 400,
+        top: 100
+    },
+    {
+        left: 500,
+        top: 100
+    },
+    {
+        left: 600,
+        top: 100
+    },
+    {
+        left: 700,
+        top: 100
+    },
+    {
+        left: 800,
+        top: 100
+    },
+    {
+        left: 900,
+        top: 100
+    },
+    {
+        left: 200,
+        top: 175
+    },
+    {
+        left: 300,
+        top: 175
+    },
+    {
+        left: 400,
+        top: 175
+    },
+    {
+        left: 500,
+        top: 175
+    },
+    {
+        left: 600,
+        top: 175
+    },
+    {
+        left: 700,
+        top: 175
+    },
+    {
+        left: 800,
+        top: 175
+    },
+    {
+        left: 900,
+        top: 175
+    }
 ];
 
 $(document).keydown(function (e) {
     if (hero.length == 0)
         return;
     switch (e.keyCode) {
-    case 37:
-        for (var i = 0; i < hero.length; i++) {
-            if (hero[i].left > 10) {
-                hero[i].left = hero[i].left - 10;
-                writeOnMessage('heroe', hero[i].iden.toString(), 'mover izquierda');
+        case 37:
+            for (var i = 0; i < hero.length; i++) {
+                if (hero[i].left > 10) {
+                    hero[i].left = hero[i].left - 10;
+                    writeOnMessage('heroe', hero[i].iden.toString(), 'mover izquierda');
+                }
             }
-        }
-        break;
-    case 39:
-        for (var i = 0; i < hero.length; i++) {
-            if (hero[i].left < 1150) {
-                hero[i].left = hero[i].left + 10;
-                writeOnMessage('heroe', hero[i].iden.toString(), 'mover derecha');
+            break;
+        case 39:
+            for (var i = 0; i < hero.length; i++) {
+                if (hero[i].left < 1150) {
+                    hero[i].left = hero[i].left + 10;
+                    writeOnMessage('heroe', hero[i].iden.toString(), 'mover derecha');
+                }
             }
-        }
-        break;
-    case 32:
-        for (var i = 0; i < hero.length; i++) {
-            missiles.push({
-                left: hero[i].left + 20,
-                top: hero[i].top - 20
-            });
-            writeOnMessage('heroe', hero[i].iden.toString(), 'disparo');
-        }
-        drawMissiles();
-        break;
+            break;
+        case 32:
+            for (var i = 0; i < hero.length; i++) {
+                missiles.push({
+                    left: hero[i].left + 20,
+                    top: hero[i].top - 20
+                });
+                writeOnMessage('heroe', hero[i].iden.toString(), 'disparo');
+            }
+            drawMissiles();
+            break;
     }
     drawHero();
 });
@@ -157,19 +204,18 @@ function collisionDetectionEnemie() {
 }
 
 function enemyRandomShot() {
-  if(missilesEnemies.length<limitebalasenemigas)
-  {
-    for (var i = 0; i < enemies.length; i++) {
-        var number = 1 + Math.floor(Math.random() * 100);
-        if (number < 2) {
-            missilesEnemies.push({
-                left: enemies[i].left + 20,
-                top: enemies[i].top + 20
-            });
-            writeOnMessage('enemigos', i, 'disparo');
+    if (missilesEnemies.length < limitebalasenemigas) {
+        for (var i = 0; i < enemies.length; i++) {
+            var number = 1 + Math.floor(Math.random() * 100);
+            if (number < 2) {
+                missilesEnemies.push({
+                    left: enemies[i].left + 20,
+                    top: enemies[i].top + 20
+                });
+                writeOnMessage('enemigos', i, 'disparo');
+            }
         }
     }
-  }
 }
 
 function drawMissilesEnemies() {
@@ -199,18 +245,16 @@ function anadir() {
     });
 }
 
-function bullettimeout(){
-  for (var ally = 0; ally < hero.length; ally++) {
-    if(hero[i].shoot==1)
-    {
-      hero[i].maxbullets--;
+function bullettimeout() {
+    for (var ally = 0; ally < hero.length; ally++) {
+        if (hero[i].shoot == 1) {
+            hero[i].maxbullets--;
+        }
+        if (hero[i].maxbullets <= 1) {
+            hero[i].maxbullets = 50;
+            hero[i].shoot == 0;
+        }
     }
-    if(hero[i].maxbullets<=1)
-    {
-      hero[i].maxbullets=50;
-      hero[i].shoot==0;
-    }
-  }
 }
 
 function gameLoop() {
@@ -236,7 +280,7 @@ function victory() {
 }
 
 function writeOnMessage(entidad, numero, accion) {
-    $('#eventos')[0].innerHTML += `${entidad}\s${numero}\s${accion}\n`;
+    $('#eventos')[0].innerHTML += `${entidad} ${numero} ${accion}\\n`;
     $('#eventos').scrollTop($('#eventos')[0].scrollHeight);
 }
 
@@ -244,5 +288,13 @@ function writeOnMessage(entidad, numero, accion) {
 $(document).ready(function () {
     console.log('ready!');
     anadir();
+    $.ajax({
+        type: 'POST',
+        url: './NewUser',
+        data: JSON.stringify({Heros : hero}),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+    });
+    console.log(JSON.stringify({Heros : hero}));
     gameLoop();
 });
