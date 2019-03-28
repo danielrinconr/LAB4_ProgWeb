@@ -1,3 +1,4 @@
+var identifier = 0;
 
 var hero = [];
 
@@ -7,7 +8,7 @@ var missilesEnemies = [];
 
 var opio = 1;
 
-var limitebalasenemigas=50;
+var limitebalasenemigas = 50;
 
 var enemies = [
     { left: 200, top: 100 },
@@ -27,8 +28,6 @@ var enemies = [
     { left: 800, top: 175 },
     { left: 900, top: 175 }
 ];
-
-var identifier = 0;
 
 $(document).keydown(function (e) {
     if (hero.length == 0)
@@ -237,12 +236,13 @@ function victory() {
 }
 
 function writeOnMessage(entidad, numero, accion) {
-    $('#eventos')[0].innerHTML += `${entidad} ${numero} ${accion}\n`;
+    $('#eventos')[0].innerHTML += `${entidad}\s${numero}\s${accion}\n`;
     $('#eventos').scrollTop($('#eventos')[0].scrollHeight);
 }
 
 
 $(document).ready(function () {
     console.log('ready!');
+    anadir();
     gameLoop();
 });
