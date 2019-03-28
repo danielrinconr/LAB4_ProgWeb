@@ -7,6 +7,8 @@ var missilesEnemies = [];
 
 var opio = 1;
 
+var limitebalasenemigas=50;
+
 var enemies = [
     { left: 200, top: 100 },
     { left: 300, top: 100 },
@@ -156,6 +158,8 @@ function collisionDetectionEnemie() {
 }
 
 function enemyRandomShot() {
+  if(missilesEnemies.length<limitebalasenemigas)
+  {
     for (var i = 0; i < enemies.length; i++) {
         var number = 1 + Math.floor(Math.random() * 100);
         if (number < 2) {
@@ -166,6 +170,7 @@ function enemyRandomShot() {
             writeOnMessage('enemigos', i, 'disparo');
         }
     }
+  }
 }
 
 function drawMissilesEnemies() {
@@ -189,8 +194,24 @@ function anadir() {
     hero.push({
         left: 500,
         top: 700,
-        iden: identifier
+        iden: identifier,
+        maxbullets: 50,
+        shoot: 1
     });
+}
+
+function bullettimeout(){
+  for (var ally = 0; ally < hero.length; ally++) {
+    if(hero[i].shoot==1)
+    {
+      hero[i].maxbullets--;
+    }
+    if(hero[i].maxbullets<=1)
+    {
+      hero[i].maxbullets=50;
+      hero[i].shoot==0;
+    }
+  }
 }
 
 function gameLoop() {
