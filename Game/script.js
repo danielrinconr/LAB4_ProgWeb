@@ -83,12 +83,14 @@ $(document).keydown(function (e) {
         case 37:
             if (hero[identifier].left > 10) {
                 hero[identifier].left = hero[identifier].left - 10;
+                $.post('./UsAct', {u:identifier, mv:hero[identifier].left});
                 writeOnMessage('heroe', identifier, 'mover izquierda');
             }
             break;
         case 39:
             if (hero[identifier].left < 1150) {
                 hero[identifier].left = hero[identifier].left + 10;
+                $.post('./UsAct', {u:identifier, mv:hero[identifier].left});
                 writeOnMessage('heroe', identifier, 'mover derecha');
             }
             break;
@@ -261,6 +263,7 @@ function gameLoop() {
     collisionDetection();
     collisionDetectionEnemie();
     victory();
+    
 }
 
 function victory() {
@@ -289,6 +292,25 @@ function Start(){
                     left: pPs[i],
                     top: 700,
                 });
+            }
+        },
+        failure: function (errMsg) {
+            alert(errMsg);
+        }
+    });
+}
+
+function Sync(){
+    $.ajax({
+        type: 'POST',
+        url: './Sync',
+        success: function (data) {
+            console.log(JSON.stringify(data));
+            var pSt = data.pSt;
+            var pPs = data.pPs;
+            for (var i = 0; i < pSt.length; i++) {
+                if (pSt[i] == 0) continue;
+                hero[i].left = pPs[i];
             }
         },
         failure: function (errMsg) {
