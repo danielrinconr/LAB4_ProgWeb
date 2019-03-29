@@ -9,8 +9,8 @@ var missilesEnemies = [];
 var opio = 1;
 
 var limitebalasenemigas = 50;
-
-var enemies = [{
+var enemies = [];
+/* var enemies = [{
         left: 200,
         top: 100
     },
@@ -75,7 +75,7 @@ var enemies = [{
         top: 175
     }
 ];
-
+ */
 $(document).keydown(function (e) {
     if (hero.length == 0)
         return;
@@ -112,12 +112,10 @@ $(document).keydown(function (e) {
 
 
 function drawHero() {
-
     $('#hero')[0].innerHTML = '';
     for (var i = 0; i < hero.length; i++) {
         document.getElementById('hero').innerHTML += `<div class='ally' style='left:${hero[i].left}px; top:${hero[i].top}px'></div>`;
     }
-
 }
 
 function drawMissiles() {
@@ -259,7 +257,6 @@ function bullettimeout() {
 
 function gameLoop() {
     drawHero();
-    setTimeout(gameLoop, 100);
     moveMissiles();
     moveMissilesEnemies();
     drawMissiles();
@@ -287,20 +284,25 @@ function writeOnMessage(entidad, numero, accion) {
 
 $(document).ready(function () {
     console.log('ready!');
-    anadir();
+    setInterval(gameLoop, 100);
     $.ajax({
         type: 'POST',
         url: './NewUser',
         success: function(data){
             console.log(JSON.stringify(data));
-            /* var myObj = JSON.parse(data); */
-            console.log(data.u);
-            console.log(data.pSt);            
-            console.log(data.pSt[data.u]);
+            var pSt = data.pSt;
+            var pPs = data.pPs;
+            for(var i = 0; i < pSt.length; i++)
+            {
+                if(pSt[i]==0) continue;
+                hero.push({
+                    left: pPs[i],
+                    top: 700,
+                });
+            }
         },
         failure: function(errMsg) {
             alert(errMsg);
         }
     });
-    gameLoop();
 });
