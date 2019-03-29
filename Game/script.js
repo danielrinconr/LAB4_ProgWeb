@@ -280,8 +280,8 @@ function victory() {
 }
 
 function writeOnMessage(entidad, numero, accion) {
-    $('#eventos')[0].innerHTML += `${entidad} ${numero} ${accion}\\n`;
-    $('#eventos').scrollTop($('#eventos')[0].scrollHeight);
+    /* $('#eventos')[0].innerHTML += `${entidad} ${numero} ${accion}\\n`;
+    $('#eventos').scrollTop($('#eventos')[0].scrollHeight); */
 }
 
 
@@ -291,10 +291,16 @@ $(document).ready(function () {
     $.ajax({
         type: 'POST',
         url: './NewUser',
-        data: JSON.stringify({Heros : hero}),
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
+        success: function(data){
+            console.log(JSON.stringify(data));
+            /* var myObj = JSON.parse(data); */
+            console.log(data.u);
+            console.log(data.pSt);            
+            console.log(data.pSt[data.u]);
+        },
+        failure: function(errMsg) {
+            alert(errMsg);
+        }
     });
-    console.log(JSON.stringify({Heros : hero}));
     gameLoop();
 });
