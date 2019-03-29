@@ -1,5 +1,3 @@
-var identifier = 0;
-
 var hero = [];
 
 var missiles = [];
@@ -9,6 +7,9 @@ var missilesEnemies = [];
 var opio = 1;
 
 var limitebalasenemigas = 50;
+
+/* var identifier = 0; //Dado por el servidor*/
+
 var enemies = [];
 /* var enemies = [{
         left: 200,
@@ -99,6 +100,7 @@ $(document).keydown(function (e) {
                 left: hero[identifier].left + 20,
                 top: hero[identifier].top - 20
             });
+            $.post('./UsAct', {u:identifier, fr:1});
             writeOnMessage('heroe', identifier, 'disparo');
             drawMissiles();
             break;
@@ -262,8 +264,7 @@ function gameLoop() {
     drawEnemies();
     collisionDetection();
     collisionDetectionEnemie();
-    victory();
-    
+    victory();    
 }
 
 function victory() {
