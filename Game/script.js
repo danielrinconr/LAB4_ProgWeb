@@ -275,10 +275,7 @@ function writeOnMessage(entidad, numero, accion) {
     $('#eventos').scrollTop($('#eventos')[0].scrollHeight); */
 }
 
-
-$(document).ready(function () {
-    console.log('ready!');
-    setInterval(gameLoop, 100);
+function Start(){
     $.ajax({
         type: 'POST',
         url: './NewUser',
@@ -298,4 +295,10 @@ $(document).ready(function () {
             alert(errMsg);
         }
     });
+}
+
+$(document).ready(function () {
+    console.log('ready!');
+    setInterval(gameLoop, 100);
+    Start();
 });
