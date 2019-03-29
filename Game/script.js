@@ -81,29 +81,23 @@ $(document).keydown(function (e) {
         return;
     switch (e.keyCode) {
         case 37:
-            for (var i = 0; i < hero.length; i++) {
-                if (hero[i].left > 10) {
-                    hero[i].left = hero[i].left - 10;
-                    writeOnMessage('heroe', hero[i].iden.toString(), 'mover izquierda');
-                }
+            if (hero[identifier].left > 10) {
+                hero[identifier].left = hero[identifier].left - 10;
+                writeOnMessage('heroe', identifier, 'mover izquierda');
             }
             break;
         case 39:
-            for (var i = 0; i < hero.length; i++) {
-                if (hero[i].left < 1150) {
-                    hero[i].left = hero[i].left + 10;
-                    writeOnMessage('heroe', hero[i].iden.toString(), 'mover derecha');
-                }
+            if (hero[identifier].left < 1150) {
+                hero[identifier].left = hero[identifier].left + 10;
+                writeOnMessage('heroe', identifier, 'mover derecha');
             }
             break;
         case 32:
-            for (var i = 0; i < hero.length; i++) {
-                missiles.push({
-                    left: hero[i].left + 20,
-                    top: hero[i].top - 20
-                });
-                writeOnMessage('heroe', hero[i].iden.toString(), 'disparo');
-            }
+            missiles.push({
+                left: hero[identifier].left + 20,
+                top: hero[identifier].top - 20
+            });
+            writeOnMessage('heroe', identifier, 'disparo');
             drawMissiles();
             break;
     }
@@ -288,20 +282,19 @@ $(document).ready(function () {
     $.ajax({
         type: 'POST',
         url: './NewUser',
-        success: function(data){
+        success: function (data) {
             console.log(JSON.stringify(data));
             var pSt = data.pSt;
             var pPs = data.pPs;
-            for(var i = 0; i < pSt.length; i++)
-            {
-                if(pSt[i]==0) continue;
+            for (var i = 0; i < pSt.length; i++) {
+                if (pSt[i] == 0) continue;
                 hero.push({
                     left: pPs[i],
                     top: 700,
                 });
             }
         },
-        failure: function(errMsg) {
+        failure: function (errMsg) {
             alert(errMsg);
         }
     });
