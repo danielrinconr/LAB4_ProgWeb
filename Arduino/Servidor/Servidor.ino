@@ -27,11 +27,11 @@ const char *password[]{"admin", "1234", "1234", "1234", "1234"};
 
 byte CnUsers = 0;
 
-// Player status MaxNumPlayers.
-byte playerSt[]{0, 0, 0};
-// X position of the players MaxNumPlayers.
-byte playerPos[]{0, 0, 0};
-// Player Points MaxNumUsers.
+// Player status.
+byte playerSt[] {0, 0, 0, 0, 0};
+// X position of the players.
+byte playerPos[]{0, 0, 0, 0, 0};
+// Player Points.
 byte playerPnts[]{0, 0, 0, 0, 0};
 // Enemies status.
 byte enemiesSt[16];
@@ -71,48 +71,53 @@ void reqLogIn()
   char *us = const_cast<char *>(server.arg(0).c_str());
   char *ps = const_cast<char *>(server.arg(1).c_str());
   bool aut = server.authenticate(us, ps);
-  Serial.printf("Loging in: -u:%s -p:%s... %c\n", us, ps, aut);
+  Serial.printf("Loging in: -u:%s -p:%s... %d\n", us, ps, aut);
 
   for (byte i = 0; i < MaxNumUsers; i++)
   {
     Serial.printf("-ui:%s -uc:%s -pi:%s -pc:%s\n", us, username[i], ps, password[i], aut);
     if (strcmp(us, username[i]) != 0)
       continue;
-    if (strcmp(ps, password[i]) == 0)
+    if (strcmp(ps, password[i]) != 0)
+      continue;
+    userid = i;
+    if (playerSt[userid] == 0)
     {
-      userid = i;
       playerSt[userid] = 1;
-      Serial.printf("Jugador %d logeado\n", userid + 1);
-      lg = true;
-      break;
+      CnUsers++;
     }
+    Serial.printf("Jugador %d logeado. Num us log:%d\n", userid + 1, CnUsers);
+    lg = true;
+    break;
   }
   if (lg == false)
-  {
-    server.send(400, "text/plain", "Omitió la página de LogIn");
-  }
-  server.send(200, "text/html", GameHTML);
+    server.send(404, "text/plain", "Fail username or password. Try again.");
+  if (CnUsers <= 3)
+    server.send(200, "text/html", GameHTML);
+  else
+    server.send(200, "text/plain", "Max number of player connected.");
 }
 
 void NewPlayer()
 {
   // Allocate the JSON document
-  const size_t capacity = 2*JSON_ARRAY_SIZE(3) + JSON_ARRAY_SIZE(16) + JSON_OBJECT_SIZE(5) + 20;
+  const size_t capacity = 2*JSON_ARRAY_SIZE(5) + JSON_ARRAY_SIZE(16) + JSON_OBJECT_SIZE(5);
   DynamicJsonDocument doc(capacity);
-  
+
   // Add values in the document
   doc["u"] = userid;
   JsonArray pSt = doc.createNestedArray("pSt");
   JsonArray pPs = doc.createNestedArray("pPs");
+  doc["ePs"] = 200;
   JsonArray eSt = doc.createNestedArray("eSt");
-  for (int i = 0; i < 3; i++)
+  for (int i = 0; i < MaxNumUsers; i++)
   {
     pSt.add(playerSt[i]);
     pPs.add(playerPos[i]);
   }
   for (int i = 0; i < 16; i++)
     eSt.add(enemiesSt[i]);
-  
+
   // Array for JSON string representation.
   char out[128];
   serializeJson(doc, out);
