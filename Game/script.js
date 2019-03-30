@@ -258,6 +258,7 @@ function Start(){
 
 function Sync(){
     if(!sync) return;
+    sync = false;
     $.ajax({
         type: 'POST',
         url: './Sync',
