@@ -1,9 +1,9 @@
-var heroes=[
-    {left:500,top:700,st:1},
-    {left:500,top:700,st:1},
-    {left:500,top:700,st:1},
-    {left:500,top:700,st:1},
-    {left:500,top:700,st:1}];
+var heroes = [
+    { left: 500, top: 700, st: 0 },
+    { left: 500, top: 700, st: 0 },
+    { left: 500, top: 700, st: 0 },
+    { left: 500, top: 700, st: 0 },
+    { left: 500, top: 700, st: 0 }];
 
 var missiles = [];
 
@@ -17,11 +17,11 @@ var sync = true;
 
 /* var identifier = 0; //Dado por el servidor*/
 
-var enemies=[
-    {left:200,top:100,st:1},{left:300,top:100,st:1},{left:400,top:100,st:1},{left:500,top:100,st:1},
-    {left:600,top:100,st:1},{left:700,top:100,st:1},{left:800,top:100,st:1},{left:900,top:100,st:1},
-    {left:200,top:175,st:1},{left:300,top:175,st:1},{left:400,top:175,st:1},{left:500,top:175,st:1},
-    {left:600,top:175,st:1},{left:700,top:175,st:1},{left:800,top:175,st:1},{left:900,top:175,st:1}];
+var enemies = [
+    { left: 200, top: 100, st: 0 }, { left: 300, top: 100, st: 0 }, { left: 400, top: 100, st: 0 }, { left: 500, top: 100, st: 0 },
+    { left: 600, top: 100, st: 0 }, { left: 700, top: 100, st: 0 }, { left: 800, top: 100, st: 0 }, { left: 900, top: 100, st: 0 },
+    { left: 200, top: 175, st: 0 }, { left: 300, top: 175, st: 0 }, { left: 400, top: 175, st: 0 }, { left: 500, top: 175, st: 0 },
+    { left: 600, top: 175, st: 0 }, { left: 700, top: 175, st: 0 }, { left: 800, top: 175, st: 0 }, { left: 900, top: 175, st: 0 }];
 
 $(document).keyup(function (e) {
     if (heroes.length == 0)
@@ -29,38 +29,14 @@ $(document).keyup(function (e) {
     switch (e.keyCode) {
         case 37:
             if (heroes[identifier].left > 10) {
-                heroes[identifier].left = heroes[identifier].left - 10;
-                $.ajax({
-                    type: 'POST',
-                    url: './UsAct',
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    data: JSON.stringify({u:identifier, mv:heroes[identifier].left}),
-                    success: function (data) {
-                    },            
-                    failure: function (errMsg) {
-                        alert(errMsg);
-                    }
-                });
-                /* writeOnMessage('heroes', identifier, 'mover izquierda'); */
+                heroes[identifier].left -= 10;
+                writeOnMessage('heroes', identifier, 'ml');
             }
             break;
         case 39:
             if (heroes[identifier].left < 1150) {
-                heroes[identifier].left = heroes[identifier].left + 10;
-                $.ajax({
-                    type: 'POST',
-                    url: './UsAct',
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    data: JSON.stringify({u:identifier, mv:heroes[identifier].left}),
-                    success: function (data) {
-                    },            
-                    failure: function (errMsg) {
-                        alert(errMsg);
-                    }
-                });
-                /* writeOnMessage('heroes', identifier, 'mover derecha'); */
+                heroes[identifier].left += 10;
+                writeOnMessage('heroes', identifier, 'mr');
             }
             break;
         case 32:
@@ -68,19 +44,7 @@ $(document).keyup(function (e) {
                 left: heroes[identifier].left + 20,
                 top: heroes[identifier].top - 20
             });
-            $.ajax({
-                type: 'POST',
-                url: './UsAct',
-                dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify({u:identifier, mv:-1}),
-                success: function (data) {
-                },            
-                failure: function (errMsg) {
-                    alert(errMsg);
-                }
-            });
-            /* writeOnMessage('heroes', identifier, 'disparo'); */
+            writeOnMessage('heroes', identifier, 'fr');
             drawMissiles();
             break;
     }
@@ -91,7 +55,7 @@ $(document).keyup(function (e) {
 function drawheroes() {
     $('#heroes')[0].innerHTML = '';
     for (var i = 0; i < 5; i++) {
-        if(heroes[i].st) continue;
+        if (!heroes[i].st) continue;
         $('#heroes')[0].innerHTML += `<div class='ally' style='left:${heroes[i].left}px; top:${heroes[i].top}px'></div>`;
     }
 }
@@ -103,19 +67,28 @@ function drawMissiles() {
     }
 }
 
-function moveMissiles() {
-    if (missiles.length != 0) {
-        for (var i = 0; i < missiles.length; i++) {
-            missiles[i].top = missiles[i].top - 8
-        }
-    }
-}
-
 function drawEnemies() {
     $('#enemies')[0].innerHTML = '';
     for (var i = 0; i < enemies.length; i++) {
-        if(enemies[i].st) continue;
+        if (!enemies[i].st) continue;
         $('#enemies')[0].innerHTML += `<div class='enemy' style='left:${enemies[i].left}px; top:${enemies[i].top}px'></div>`;
+    }
+}
+
+function drawMissilesEnemies() {
+    if (missilesEnemies.length == 0)
+        return;
+    $('#missilesEnemies')[0].innerHTML = '';
+    for (var i = 0; i < missilesEnemies.length; i++) {
+        $('#missilesEnemies')[0].innerHTML += `<div class='missile2' style='left:${missilesEnemies[i].left}px; top:${missilesEnemies[i].top}px'></div>`;
+    }
+}
+
+function moveMissiles() {
+    if (missiles.length == 0)
+        return;
+    for (var i = 0; i < missiles.length; i++) {
+        missiles[i].top = missiles[i].top - 8
     }
 }
 
@@ -136,6 +109,14 @@ function moveEnemies() {
             enemies[i].left = enemies[i].left - 10;
             /* writeOnMessage('enemigos',i.toString(),'mover izquierda');*/
         }
+    }
+}
+
+function moveMissilesEnemies() {
+    if (missilesEnemies.length == 0)
+        return;
+    for (var i = 0; i < missilesEnemies.length; i++) {
+        missilesEnemies[i].top = missilesEnemies[i].top + 8
     }
 }
 
@@ -163,7 +144,7 @@ function collisionDetection() {
 function collisionDetectionEnemie() {
     for (var missile = 0; missile < missilesEnemies.length; missile++) {
         for (var ally = 0; ally < heroes.length; ally++) {
-            if(heroes[ally].st) continue;
+            if (heroes[ally].st) continue;
             if (
                 missilesEnemies[missile].left >= heroes[ally].left &&
                 missilesEnemies[missile].left <= (heroes[ally].left + 50) &&
@@ -182,35 +163,18 @@ function collisionDetectionEnemie() {
 }
 
 function enemyRandomShot() {
-    if (missilesEnemies.length < limitebalasenemigas) {
-        for (var i = 0; i < enemies.length; i++) {
-            if (!enemies[i].st) continue;
-            var number = 1 + Math.floor(Math.random() * 100);
-            if (number < 2) {
-                missilesEnemies.push({
-                    left: enemies[i].left + 20,
-                    top: enemies[i].top + 20
-                });
-                writeOnMessage('enemigos', i, 'disparo');
-            }
+    if (missilesEnemies.length >= limitebalasenemigas)
+        return;
+    for (var i = 0; i < enemies.length; i++) {
+        if (!enemies[i].st) continue;
+        var number = 1 + Math.floor(Math.random() * 100);
+        if (number < 2) {
+            missilesEnemies.push({
+                left: enemies[i].left + 20,
+                top: enemies[i].top + 20
+            });
+            writeOnMessage('enemigos', i, 'disparo');
         }
-    }
-}
-
-function drawMissilesEnemies() {
-    if (missilesEnemies.length == 0)
-        return;
-    $('#missilesEnemies')[0].innerHTML = '';
-    for (var i = 0; i < missilesEnemies.length; i++) {
-        $('#missilesEnemies')[0].innerHTML += `<div class='missile2' style='left:${missilesEnemies[i].left}px; top:${missilesEnemies[i].top}px'></div>`;
-    }
-}
-
-function moveMissilesEnemies() {
-    if (missilesEnemies.length == 0)
-        return;
-    for (var i = 0; i < missilesEnemies.length; i++) {
-        missilesEnemies[i].top = missilesEnemies[i].top + 8
     }
 }
 
@@ -258,13 +222,27 @@ function victory() {
     }
 }
 
-function writeOnMessage(entidad, numero, accion) {
+function writeOnMessage(ent, num, act) {
     /* $('#eventos')[0].innerHTML += `${entidad} ${numero} ${accion}\\n`;
     $('#eventos').scrollTop($('#eventos')[0].scrollHeight); */
-    
+    var _url = (ent == 'heroes') ? './UsAct' : './MchAct';
+    var _act = (act == 'fr') ? -1 : heroes[num].left;
+    $.ajax({
+        type: 'POST',
+        url: _url,
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify({ u: num, mv: _act }),
+        success: function (data) {
+        },
+        failure: function (errMsg) {
+            alert(errMsg);
+        }
+    });
+
 }
 
-function Start(){
+function Start() {
     $.ajax({
         type: 'POST',
         url: './NewUser',
@@ -283,8 +261,8 @@ function Start(){
     });
 }
 
-function Sync(){
-    if(!sync) return;
+function Sync() {
+    if (!sync) return;
     sync = false;
     $.ajax({
         type: 'POST',
@@ -293,13 +271,13 @@ function Sync(){
             /* console.log(JSON.stringify(data)); */
             var pSt = data.pSt;
             var pPs = data.pPs;
-            for (var i = 0; i < pSt.length; i++) {                
+            for (var i = 0; i < pSt.length; i++) {
                 heroes[i].st = pSt[i];
-                if (pSt[i] == 1 ) continue;
+                if (pSt[i] == 1) continue;
                 if (i == identifier) continue;
                 heroes[i].left = pPs[i];
             }
-            sync=true;
+            sync = true;
         },
 
         failure: function (errMsg) {
