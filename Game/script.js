@@ -1,6 +1,9 @@
-var identifier = 0;
-
-var hero = [];
+var heroes=[
+    {left:200,top:700,st:1},
+    {left:300,top:700,st:1},
+    {left:400,top:700,st:1},
+    {left:500,top:700,st:1},
+    {left:600,top:700,st:1}];
 
 var missiles = [];
 
@@ -9,119 +12,61 @@ var missilesEnemies = [];
 var opio = 1;
 
 var limitebalasenemigas = 50;
-var enemies = [];
-/* var enemies = [{
-        left: 200,
-        top: 100
-    },
-    {
-        left: 300,
-        top: 100
-    },
-    {
-        left: 400,
-        top: 100
-    },
-    {
-        left: 500,
-        top: 100
-    },
-    {
-        left: 600,
-        top: 100
-    },
-    {
-        left: 700,
-        top: 100
-    },
-    {
-        left: 800,
-        top: 100
-    },
-    {
-        left: 900,
-        top: 100
-    },
-    {
-        left: 200,
-        top: 175
-    },
-    {
-        left: 300,
-        top: 175
-    },
-    {
-        left: 400,
-        top: 175
-    },
-    {
-        left: 500,
-        top: 175
-    },
-    {
-        left: 600,
-        top: 175
-    },
-    {
-        left: 700,
-        top: 175
-    },
-    {
-        left: 800,
-        top: 175
-    },
-    {
-        left: 900,
-        top: 175
-    }
-];
- */
+
+var sync = true;
+
+/* var identifier = 0; //Dado por el servidor*/
+
+var enemies=[
+    {left:200,top:100,st:0},{left:300,top:100,st:0},{left:400,top:100,st:0},{left:500,top:100,st:0},
+    {left:600,top:100,st:0},{left:700,top:100,st:0},{left:800,top:100,st:0},{left:900,top:100,st:0},
+    {left:200,top:175,st:0},{left:300,top:175,st:0},{left:400,top:175,st:0},{left:500,top:175,st:0},
+    {left:600,top:175,st:0},{left:700,top:175,st:0},{left:800,top:175,st:0},{left:900,top:175,st:0}];
+
 $(document).keydown(function (e) {
-    if (hero.length == 0)
+    if (heroes.length == 0)
         return;
     switch (e.keyCode) {
         case 37:
-            for (var i = 0; i < hero.length; i++) {
-                if (hero[i].left > 10) {
-                    hero[i].left = hero[i].left - 10;
-                    writeOnMessage('heroe', hero[i].iden.toString(), 'mover izquierda');
-                }
+            if (heroes[identifier].left > 10) {
+                heroes[identifier].left = heroes[identifier].left - 10;
+                $.post('./UsAct', {u:identifier, mv:heroes[identifier].left});
+                writeOnMessage('heroes', identifier, 'mover izquierda');
             }
             break;
         case 39:
-            for (var i = 0; i < hero.length; i++) {
-                if (hero[i].left < 1150) {
-                    hero[i].left = hero[i].left + 10;
-                    writeOnMessage('heroe', hero[i].iden.toString(), 'mover derecha');
-                }
+            if (heroes[identifier].left < 1150) {
+                heroes[identifier].left = heroes[identifier].left + 10;
+                $.post('./UsAct', {u:identifier, mv:heroes[identifier].left});
+                writeOnMessage('heroes', identifier, 'mover derecha');
             }
             break;
         case 32:
-            for (var i = 0; i < hero.length; i++) {
-                missiles.push({
-                    left: hero[i].left + 20,
-                    top: hero[i].top - 20
-                });
-                writeOnMessage('heroe', hero[i].iden.toString(), 'disparo');
-            }
+            missiles.push({
+                left: heroes[identifier].left + 20,
+                top: heroes[identifier].top - 20
+            });
+            $.post('./UsAct', {u:identifier, fr:1});
+            writeOnMessage('heroes', identifier, 'disparo');
             drawMissiles();
             break;
     }
-    drawHero();
+    drawheroes();
 });
 
 
-function drawHero() {
-    $('#hero')[0].innerHTML = '';
-    for (var i = 0; i < hero.length; i++) {
-        document.getElementById('hero').innerHTML += `<div class='ally' style='left:${hero[i].left}px; top:${hero[i].top}px'></div>`;
+function drawheroes() {
+    $('#heroes')[0].innerHTML = '';
+    for (var i = 0; i < 5; i++) {
+        if(heroes[i].st) continue;
+        $('#heroes')[0].innerHTML += `<div class='ally' style='left:${heroes[i].left}px; top:${heroes[i].top}px'></div>`;
     }
 }
 
 function drawMissiles() {
     $('#missiles')[0].innerHTML = '';
     for (var i = 0; i < missiles.length; i++) {
-        document.getElementById('missiles').innerHTML += `<div class='missile1' style='left:${missiles[i].left}px; top:${missiles[i].top}px'></div>`;
+        $('#missiles')[0].innerHTML += `<div class='missile1' style='left:${missiles[i].left}px; top:${missiles[i].top}px'></div>`;
     }
 }
 
@@ -136,6 +81,7 @@ function moveMissiles() {
 function drawEnemies() {
     $('#enemies')[0].innerHTML = '';
     for (var i = 0; i < enemies.length; i++) {
+        if(enemies[i].st) continue;
         $('#enemies')[0].innerHTML += `<div class='enemy' style='left:${enemies[i].left}px; top:${enemies[i].top}px'></div>`;
     }
 }
@@ -171,7 +117,8 @@ function collisionDetection() {
                 missiles[missile].top <= (enemies[enemy].top + 50) &&
                 missiles[missile].top >= enemies[enemy].top
             ) {
-                enemies.splice(enemy, 1);
+                /* enemies.splice(enemy, 1); */
+                enemies[enemy].st = 1;
                 missiles.splice(missile, 1);
             }
 
@@ -184,14 +131,16 @@ function collisionDetection() {
 
 function collisionDetectionEnemie() {
     for (var missile = 0; missile < missilesEnemies.length; missile++) {
-        for (var ally = 0; ally < hero.length; ally++) {
+        for (var ally = 0; ally < heroes.length; ally++) {
+            if(heroes[ally].st) continue;
             if (
-                missilesEnemies[missile].left >= hero[ally].left &&
-                missilesEnemies[missile].left <= (hero[ally].left + 50) &&
-                missilesEnemies[missile].top <= (hero[ally].top + 50) &&
-                missilesEnemies[missile].top >= hero[ally].top
+                missilesEnemies[missile].left >= heroes[ally].left &&
+                missilesEnemies[missile].left <= (heroes[ally].left + 50) &&
+                missilesEnemies[missile].top <= (heroes[ally].top + 50) &&
+                missilesEnemies[missile].top >= heroes[ally].top
             ) {
-                hero.splice(ally, 1);
+                /* heroes.splice(ally, 1); */
+                heroes[ally].st = 0;
                 missilesEnemies.splice(missile, 1);
             }
         }
@@ -234,7 +183,7 @@ function moveMissilesEnemies() {
 }
 
 function anadir() {
-    hero.push({
+    heroes.push({
         left: 500,
         top: 700,
         iden: identifier,
@@ -244,19 +193,19 @@ function anadir() {
 }
 
 function bullettimeout() {
-    for (var ally = 0; ally < hero.length; ally++) {
-        if (hero[i].shoot == 1) {
-            hero[i].maxbullets--;
+    for (var ally = 0; ally < heroes.length; ally++) {
+        if (heroes[i].shoot == 1) {
+            heroes[i].maxbullets--;
         }
-        if (hero[i].maxbullets <= 1) {
-            hero[i].maxbullets = 50;
-            hero[i].shoot == 0;
+        if (heroes[i].maxbullets <= 1) {
+            heroes[i].maxbullets = 50;
+            heroes[i].shoot == 0;
         }
     }
 }
 
 function gameLoop() {
-    drawHero();
+    drawheroes();
     moveMissiles();
     moveMissilesEnemies();
     drawMissiles();
@@ -267,6 +216,7 @@ function gameLoop() {
     collisionDetection();
     collisionDetectionEnemie();
     victory();
+    Sync();
 }
 
 function victory() {
@@ -281,28 +231,56 @@ function writeOnMessage(entidad, numero, accion) {
     $('#eventos').scrollTop($('#eventos')[0].scrollHeight); */
 }
 
+function Start(){
+    $.ajax({
+        type: 'POST',
+        url: './NewUser',
+        success: function (data) {
+            console.log(JSON.stringify(data));
+            var pSt = data.pSt;
+            var pPs = data.pPs;
+            for (var i = 0; i < pSt.length; i++) {
+                if (pSt[i] == 1) continue;
+                heroes[i].st = pSt[i];
+                left
+/*                 heroes.push({
+                    id: identifier,
+                    left: pPs[i],
+                    top: 700,
+                }); */
+            }
+        },
+        failure: function (errMsg) {
+            alert(errMsg);
+        }
+    });
+}
+
+function Sync(){
+    if(!sync) return;
+    sync = false;
+    $.ajax({
+        type: 'POST',
+        url: './Sync',
+        success: function (data) {
+            /* console.log(JSON.stringify(data)); */
+            var pSt = data.pSt;
+            var pPs = data.pPs;
+            for (var i = 0; i < pSt.length; i++) {
+                heroes[i].st = pSt[i];
+                if (pSt[i] == 1) continue;
+                heroes[i].left = pPs[i];
+            }
+            sync=true;
+        },
+
+        failure: function (errMsg) {
+            alert(errMsg);
+        }
+    });
+}
 
 $(document).ready(function () {
     console.log('ready!');
     setInterval(gameLoop, 100);
-    $.ajax({
-        type: 'POST',
-        url: './NewUser',
-        success: function(data){
-            console.log(JSON.stringify(data));
-            var pSt = data.pSt;
-            var pPs = data.pPs;
-            for(var i = 0; i < pSt.length; i++)
-            {
-                if(pSt[i]==0) continue;
-                hero.push({
-                    left: pPs[i],
-                    top: 700,
-                });
-            }
-        },
-        failure: function(errMsg) {
-            alert(errMsg);
-        }
-    });
 });
