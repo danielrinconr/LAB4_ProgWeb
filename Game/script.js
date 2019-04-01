@@ -123,6 +123,7 @@ function moveMissilesEnemies() {
 function collisionDetection() {
     for (var missile = 0; missile < missiles.length; missile++) {
         for (var enemy = 0; enemy < enemies.length; enemy++) {
+            if (!enemies[enemy].st) continue;
             if (
                 missiles[missile].left >= enemies[enemy].left &&
                 missiles[missile].left <= (enemies[enemy].left + 50) &&
@@ -130,10 +131,9 @@ function collisionDetection() {
                 missiles[missile].top >= enemies[enemy].top
             ) {
                 /* enemies.splice(enemy, 1); */
-                enemies[enemy].st = 1;
+                enemies[enemy].st = 0;
                 missiles.splice(missile, 1);
             }
-
         }
         if (missiles[missile].top <= 10) {
             missiles.splice(missile, 1);
@@ -173,7 +173,7 @@ function enemyRandomShot() {
                 left: enemies[i].left + 20,
                 top: enemies[i].top + 20
             });
-            writeOnMessage('enemigos', i, 'disparo');
+            /* writeOnMessage('enemigos', i, 'disparo'); */
         }
     }
 }
