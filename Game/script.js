@@ -16,12 +16,12 @@ var limitebalasenemigas = 50;
 var sync = true;
 
 /* var identifier = 0; //Dado por el servidor*/
-
+var enemiesPos = 200;
 var enemies = [
-    { left: 200, top: 100, st: 0 }, { left: 300, top: 100, st: 0 }, { left: 400, top: 100, st: 0 }, { left: 500, top: 100, st: 0 },
-    { left: 600, top: 100, st: 0 }, { left: 700, top: 100, st: 0 }, { left: 800, top: 100, st: 0 }, { left: 900, top: 100, st: 0 },
-    { left: 200, top: 175, st: 0 }, { left: 300, top: 175, st: 0 }, { left: 400, top: 175, st: 0 }, { left: 500, top: 175, st: 0 },
-    { left: 600, top: 175, st: 0 }, { left: 700, top: 175, st: 0 }, { left: 800, top: 175, st: 0 }, { left: 900, top: 175, st: 0 }];
+    { left: 200, top: 100, st: 1 }, { left: 300, top: 100, st: 1 }, { left: 400, top: 100, st: 1 }, { left: 500, top: 100, st: 1 },
+    { left: 600, top: 100, st: 1 }, { left: 700, top: 100, st: 1 }, { left: 800, top: 100, st: 1 }, { left: 900, top: 100, st: 1 },
+    { left: 200, top: 175, st: 1 }, { left: 300, top: 175, st: 1 }, { left: 400, top: 175, st: 1 }, { left: 500, top: 175, st: 1 },
+    { left: 600, top: 175, st: 1 }, { left: 700, top: 175, st: 1 }, { left: 800, top: 175, st: 1 }, { left: 900, top: 175, st: 1 }];
 
 $(document).keyup(function (e) {
     if (heroes.length == 0)
@@ -122,7 +122,9 @@ function moveMissilesEnemies() {
 
 function collisionDetection() {
     for (var missile = 0; missile < missiles.length; missile++) {
+        if (missiles.length==0) break;
         for (var enemy = 0; enemy < enemies.length; enemy++) {
+            if (enemies.length==0) break;
             if (!enemies[enemy].st) continue;
             if (
                 missiles[missile].left >= enemies[enemy].left &&
@@ -143,6 +145,7 @@ function collisionDetection() {
 
 function collisionDetectionEnemie() {
     for (var missile = 0; missile < missilesEnemies.length; missile++) {
+        if (missilesEnemies.length==0) break;
         for (var ally = 0; ally < heroes.length; ally++) {
             if (!heroes[ally].st) continue;
             if (
@@ -206,8 +209,8 @@ function gameLoop() {
     moveMissilesEnemies();
     drawMissiles();
     drawMissilesEnemies();
-    moveEnemies();
-    enemyRandomShot();
+    /* moveEnemies(); */
+    /* enemyRandomShot(); */
     drawEnemies();
     collisionDetection();
     collisionDetectionEnemie();
@@ -242,24 +245,6 @@ function writeOnMessage(ent, num, act) {
 
 }
 
-/* function Start() {
-    $.ajax({
-        type: 'POST',
-        url: './NewUser',
-        success: function (data) {
-            console.log(JSON.stringify(data));
-            var pSt = data.pSt;
-            var pPs = data.pPs;
-            for (var i = 0; i < pSt.length; i++) {
-                if (pSt[i] == 1) continue;
-                heroes[i].st = pSt[i];
-            }
-        },
-        failure: function (errMsg) {
-            alert(errMsg);
-        }
-    });
-} */
 
 function Sync() {
     if (!sync) return;
@@ -271,12 +256,21 @@ function Sync() {
             /* console.log(JSON.stringify(data)); */
             var pSt = data.pSt;
             var pPs = data.pPs;
+            var eSt = data.eSt;
             for (var i = 0; i < pSt.length; i++) {
                 heroes[i].st = pSt[i];
                 if (!pSt[i]) continue;
                 if (i == identifier) continue;
                 heroes[i].left = pPs[i];
             }
+            enemiesPos = data.ePs;
+            for(var j = 0; j<2; j++)
+                for (var i = 0; i < 8; i++) {
+                    var ind = 8*j+i;
+                    /* enemies[ind].st = eSt[ind]; */
+                    if (!eSt[ind]) continue;
+                    enemies[ind].left = enemiesPos + (100*i);
+                }
             sync = true;
         },
 
