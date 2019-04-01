@@ -56,7 +56,7 @@ function drawheroes() {
     $('#heroes')[0].innerHTML = '';
     for (var i = 0; i < 5; i++) {
         if (!heroes[i].st) continue;
-        $('#heroes')[0].innerHTML += `<div class='ally' style='left:${heroes[i].left}px; top:${heroes[i].top}px'></div>`;
+        $('#heroes')[0].innerHTML += `<div class='ally' style='left:${heroes[i].left}px; top:${heroes[i].top}px'>${identifier}</div>`;
     }
 }
 
@@ -144,7 +144,7 @@ function collisionDetection() {
 function collisionDetectionEnemie() {
     for (var missile = 0; missile < missilesEnemies.length; missile++) {
         for (var ally = 0; ally < heroes.length; ally++) {
-            if (heroes[ally].st) continue;
+            if (!heroes[ally].st) continue;
             if (
                 missilesEnemies[missile].left >= heroes[ally].left &&
                 missilesEnemies[missile].left <= (heroes[ally].left + 50) &&
@@ -242,24 +242,24 @@ function writeOnMessage(ent, num, act) {
 
 }
 
-function Start() {
-    $.ajax({
-        type: 'POST',
-        url: './NewUser',
-        success: function (data) {
-            console.log(JSON.stringify(data));
-            var pSt = data.pSt;
-            var pPs = data.pPs;
-            for (var i = 0; i < pSt.length; i++) {
-                if (pSt[i] == 1) continue;
-                heroes[i].st = pSt[i];
-            }
-        },
-        failure: function (errMsg) {
-            alert(errMsg);
-        }
-    });
-}
+// function Start() {
+//     $.ajax({
+//         type: 'POST',
+//         url: './NewUser',
+//         success: function (data) {
+//             console.log(JSON.stringify(data));
+//             var pSt = data.pSt;
+//             var pPs = data.pPs;
+//             for (var i = 0; i < pSt.length; i++) {
+//                 if (pSt[i] == 1) continue;
+//                 heroes[i].st = pSt[i];
+//             }
+//         },
+//         failure: function (errMsg) {
+//             alert(errMsg);
+//         }
+//     });
+// }
 
 function Sync() {
     if (!sync) return;
@@ -273,7 +273,7 @@ function Sync() {
             var pPs = data.pPs;
             for (var i = 0; i < pSt.length; i++) {
                 heroes[i].st = pSt[i];
-                if (pSt[i] == 1) continue;
+                if (!pSt[i]) continue;
                 if (i == identifier) continue;
                 heroes[i].left = pPs[i];
             }
