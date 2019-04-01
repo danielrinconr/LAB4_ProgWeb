@@ -120,8 +120,6 @@ function drawEnemies() {
 }
 
 function moveEnemies() {
-    if (enemies.length == 0)
-        return;
     if (enemies[0].left < 10 && opio == 0) {
         opio = 1;
     }
@@ -186,6 +184,7 @@ function collisionDetectionEnemie() {
 function enemyRandomShot() {
     if (missilesEnemies.length < limitebalasenemigas) {
         for (var i = 0; i < enemies.length; i++) {
+            if (!enemies[i].st) continue;
             var number = 1 + Math.floor(Math.random() * 100);
             if (number < 2) {
                 missilesEnemies.push({
@@ -262,6 +261,7 @@ function victory() {
 function writeOnMessage(entidad, numero, accion) {
     /* $('#eventos')[0].innerHTML += `${entidad} ${numero} ${accion}\\n`;
     $('#eventos').scrollTop($('#eventos')[0].scrollHeight); */
+    
 }
 
 function Start(){
