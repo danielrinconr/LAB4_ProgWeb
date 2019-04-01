@@ -242,24 +242,24 @@ function writeOnMessage(ent, num, act) {
 
 }
 
-// function Start() {
-//     $.ajax({
-//         type: 'POST',
-//         url: './NewUser',
-//         success: function (data) {
-//             console.log(JSON.stringify(data));
-//             var pSt = data.pSt;
-//             var pPs = data.pPs;
-//             for (var i = 0; i < pSt.length; i++) {
-//                 if (pSt[i] == 1) continue;
-//                 heroes[i].st = pSt[i];
-//             }
-//         },
-//         failure: function (errMsg) {
-//             alert(errMsg);
-//         }
-//     });
-// }
+/* function Start() {
+    $.ajax({
+        type: 'POST',
+        url: './NewUser',
+        success: function (data) {
+            console.log(JSON.stringify(data));
+            var pSt = data.pSt;
+            var pPs = data.pPs;
+            for (var i = 0; i < pSt.length; i++) {
+                if (pSt[i] == 1) continue;
+                heroes[i].st = pSt[i];
+            }
+        },
+        failure: function (errMsg) {
+            alert(errMsg);
+        }
+    });
+} */
 
 function Sync() {
     if (!sync) return;
