@@ -1,9 +1,9 @@
 var heroes=[
-    {left:200,top:700,st:1},
-    {left:300,top:700,st:1},
-    {left:400,top:700,st:1},
     {left:500,top:700,st:1},
-    {left:600,top:700,st:1}];
+    {left:500,top:700,st:1},
+    {left:500,top:700,st:1},
+    {left:500,top:700,st:1},
+    {left:500,top:700,st:1}];
 
 var missiles = [];
 
@@ -18,27 +18,49 @@ var sync = true;
 /* var identifier = 0; //Dado por el servidor*/
 
 var enemies=[
-    {left:200,top:100,st:0},{left:300,top:100,st:0},{left:400,top:100,st:0},{left:500,top:100,st:0},
-    {left:600,top:100,st:0},{left:700,top:100,st:0},{left:800,top:100,st:0},{left:900,top:100,st:0},
-    {left:200,top:175,st:0},{left:300,top:175,st:0},{left:400,top:175,st:0},{left:500,top:175,st:0},
-    {left:600,top:175,st:0},{left:700,top:175,st:0},{left:800,top:175,st:0},{left:900,top:175,st:0}];
+    {left:200,top:100,st:1},{left:300,top:100,st:1},{left:400,top:100,st:1},{left:500,top:100,st:1},
+    {left:600,top:100,st:1},{left:700,top:100,st:1},{left:800,top:100,st:1},{left:900,top:100,st:1},
+    {left:200,top:175,st:1},{left:300,top:175,st:1},{left:400,top:175,st:1},{left:500,top:175,st:1},
+    {left:600,top:175,st:1},{left:700,top:175,st:1},{left:800,top:175,st:1},{left:900,top:175,st:1}];
 
-$(document).keydown(function (e) {
+$(document).keyup(function (e) {
     if (heroes.length == 0)
         return;
     switch (e.keyCode) {
         case 37:
             if (heroes[identifier].left > 10) {
                 heroes[identifier].left = heroes[identifier].left - 10;
-                $.post('./UsAct', {u:identifier, mv:heroes[identifier].left});
-                writeOnMessage('heroes', identifier, 'mover izquierda');
+                $.ajax({
+                    type: 'POST',
+                    url: './UsAct',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({u:identifier, mv:heroes[identifier].left}),
+                    success: function (data) {
+                    },            
+                    failure: function (errMsg) {
+                        alert(errMsg);
+                    }
+                });
+                /* writeOnMessage('heroes', identifier, 'mover izquierda'); */
             }
             break;
         case 39:
             if (heroes[identifier].left < 1150) {
                 heroes[identifier].left = heroes[identifier].left + 10;
-                $.post('./UsAct', {u:identifier, mv:heroes[identifier].left});
-                writeOnMessage('heroes', identifier, 'mover derecha');
+                $.ajax({
+                    type: 'POST',
+                    url: './UsAct',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({u:identifier, mv:heroes[identifier].left}),
+                    success: function (data) {
+                    },            
+                    failure: function (errMsg) {
+                        alert(errMsg);
+                    }
+                });
+                /* writeOnMessage('heroes', identifier, 'mover derecha'); */
             }
             break;
         case 32:
@@ -46,8 +68,19 @@ $(document).keydown(function (e) {
                 left: heroes[identifier].left + 20,
                 top: heroes[identifier].top - 20
             });
-            $.post('./UsAct', {u:identifier, fr:1});
-            writeOnMessage('heroes', identifier, 'disparo');
+            $.ajax({
+                type: 'POST',
+                url: './UsAct',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({u:identifier, mv:-1}),
+                success: function (data) {
+                },            
+                failure: function (errMsg) {
+                    alert(errMsg);
+                }
+            });
+            /* writeOnMessage('heroes', identifier, 'disparo'); */
             drawMissiles();
             break;
     }
@@ -242,12 +275,6 @@ function Start(){
             for (var i = 0; i < pSt.length; i++) {
                 if (pSt[i] == 1) continue;
                 heroes[i].st = pSt[i];
-                left
-/*                 heroes.push({
-                    id: identifier,
-                    left: pPs[i],
-                    top: 700,
-                }); */
             }
         },
         failure: function (errMsg) {
@@ -266,9 +293,10 @@ function Sync(){
             /* console.log(JSON.stringify(data)); */
             var pSt = data.pSt;
             var pPs = data.pPs;
-            for (var i = 0; i < pSt.length; i++) {
+            for (var i = 0; i < pSt.length; i++) {                
                 heroes[i].st = pSt[i];
-                if (pSt[i] == 1) continue;
+                if (pSt[i] == 1 ) continue;
+                if (i == identifier) continue;
                 heroes[i].left = pPs[i];
             }
             sync=true;
