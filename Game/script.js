@@ -56,7 +56,7 @@ function drawheroes() {
     $('#heroes')[0].innerHTML = '';
     for (var i = 0; i < 5; i++) {
         if (!heroes[i].st) continue;
-        $('#heroes')[0].innerHTML += `<div class='ally' style='left:${heroes[i].left}px; top:${heroes[i].top}px'>${identifier}</div>`;
+        $('#heroes')[0].innerHTML += `<div class='ally' style='left:${heroes[i].left}px; top:${heroes[i].top}px'>${i+1}</div>`;
     }
 }
 
