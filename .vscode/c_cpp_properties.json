@@ -4,9 +4,7 @@
             "name": "Win32",
             "includePath": [
                 "C:\\Users\\ETM13-PC-04\\AppData\\Local\\Arduino15\\packages\\esp8266\\tools\\**",
-                "C:\\Users\\ETM13-PC-04\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\2.5.0\\**",
-                "C:\\\\Users\\\\EMMA\\\\AppData\\\\Local\\\\Arduino15\\\\packages\\\\esp8266\\\\tools\\\\**",
-                "C:\\\\Users\\\\EMMA\\\\AppData\\\\Local\\\\Arduino15\\\\packages\\\\esp8266\\\\hardware\\\\esp8266\\\\2.5.0\\\\**"
+                "C:\\Users\\ETM13-PC-04\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\2.5.0\\**"
             ],
             "forcedInclude": [],
             "intelliSenseMode": "msvc-x64",
